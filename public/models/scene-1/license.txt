@@ -1,0 +1,8 @@
+Model Information:
+* title:	Bolt and Nut
+* source:	https://sketchfab.com/3d-models/bolt-and-nut-9293f1f3412d4586bd51469120624671
+* author:	Unity Fan youtube channel (https://sketchfab.com/unityfan777)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
