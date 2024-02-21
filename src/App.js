@@ -73,12 +73,6 @@ export default class App {
 		for (let i = 0; i < 2; i++) {
 			const scene = new Scene();
 
-			const hdrEquirect = new RGBELoader().setPath("textures/").load("potsdamer_platz_1k.hdr", () => {
-				hdrEquirect.mapping = EquirectangularReflectionMapping;
-			});
-			scene.environment = hdrEquirect;
-			scene.background = new Color(0x242424);
-
 			// create a scene element
 			const sceneHtmlContainer = document.createElement("div");
 			sceneHtmlContainer.className = "scene";
@@ -86,7 +80,7 @@ export default class App {
 			scene.userData.element = sceneHtmlContainer;
 			sceneContainer[i].appendChild(sceneHtmlContainer);
 
-			const camera = new PerspectiveCamera(75, this._vw / this._vh, 0.1, 100);
+			const camera = new PerspectiveCamera(40, this._vw / this._vh, 0.1, 100);
 			camera.position.z = 2;
 			scene.userData.camera = camera;
 
@@ -94,25 +88,38 @@ export default class App {
 			controls.minDistance = 1;
 			controls.maxDistance = 5;
 			controls.enablePan = false;
+			controls.enableZoom = false;
 			controls.enableDamping = true;
+			controls.autoRotate = true;
+			controls.autoRotateSpeed = 3;
 			scene.userData.controls = controls;
 
-			new GLTFLoader().setPath("models/").load(`scene-${i + 1}/scene.gltf`, (data) => {
+			new GLTFLoader().setPath("models/").load(`scene-${i + 1}.glb`, (data) => {
 				const model = data.scene.children[0];
 				if (i === 0) {
+					model.scale.setScalar(15);
+					model.position.set(0.3, 0, 0);
 				} else {
-					model.scale.setScalar(0.75);
+					model.scale.setScalar(0.4);
 					model.rotation.set(0.5, 0.7, 0);
-					model.position.set(0, 0, 0);
+					// model.position.set(0, 0, 0);
 				}
 				scene.add(model);
 			});
 
-			// const ambientLight = new AmbientLight();
-			// const light = new DirectionalLight(0xffffff, 1.5);
-			// light.position.set(1, 1, 1);
-			// scene.add(ambientLight);
-			// scene.add(light);
+			if (i === 0) {
+				const ambientLight = new AmbientLight(0xffffff, 10);
+				const light = new DirectionalLight(0xffffff, 1.5);
+				light.position.set(0, 1, 1);
+				scene.add(ambientLight);
+				scene.add(light);
+			} else {
+				const ambientLight = new AmbientLight(0xffffff, 3);
+				const light = new DirectionalLight(0xffffff, 1.5);
+				light.position.set(1, 1, 1);
+				scene.add(ambientLight);
+				scene.add(light);
+			}
 
 			// scene.add(new AxesHelper(5));
 			this._scenes.push(scene);
@@ -125,12 +132,6 @@ export default class App {
 		const sceneContainer = document.querySelector(".full-width-scene");
 		scene.userData.element = sceneContainer;
 
-		const hdrEquirect = new RGBELoader().setPath("textures/").load("potsdamer_platz_1k.hdr", () => {
-			hdrEquirect.mapping = EquirectangularReflectionMapping;
-		});
-		scene.environment = hdrEquirect;
-		scene.background = new Color(0x242424);
-
 		const camera = new PerspectiveCamera(75, this._vw / this._vh, 0.1, 100);
 		camera.position.set(0, 2, 4);
 		camera.zoom = 2;
@@ -141,19 +142,21 @@ export default class App {
 		controls.maxDistance = 5;
 		controls.enableDamping = true;
 		controls.enablePan = false;
-		// controls.enableZoom = false;
+		controls.enableZoom = false;
+		controls.autoRotate = true;
+		controls.autoRotateSpeed = 3;
 		scene.userData.controls = controls;
 
 		new GLTFLoader().setPath("models/").load("full-width-scene/scene.gltf", (data) => {
 			const model = data.scene.children[0];
-			model.scale.setScalar(0.02);
-			model.position.set(0, 0, -1.5);
+			model.scale.setScalar(0.022);
+			model.position.set(0, 0, -1.8);
 			scene.add(model);
 		});
 
-		const ambientLight = new AmbientLight();
-		const light = new DirectionalLight(0xffffff, 1.5);
-		light.position.set(1, 1, 1);
+		const ambientLight = new AmbientLight(0xffffff, 10);
+		const light = new DirectionalLight(0xffffff, 5);
+		light.position.set(0, 0.5, 1);
 		scene.add(ambientLight);
 		scene.add(light);
 
@@ -175,9 +178,6 @@ export default class App {
 		this._renderer.setScissorTest(true);
 
 		this._scenes.forEach((scene) => {
-			// scene.children[0].rotation.y = elapsedTime * 0.2;
-			// scene.children[0].rotation.z = elapsedTime * 0.2;
-			// scene.children[0].rotation.x = elapsedTime * 0.2;
 			// get the element that is a place holder for where we want to
 			// draw the scene
 			const element = scene.userData.element;

@@ -73,6 +73,7 @@ h1 {
 	grid-template-columns: repeat(2, 1fr);
 	gap: min(2vw, 40px);
 	margin: 20vh 0;
+	align-items: center;
 }
 
 h2 {
