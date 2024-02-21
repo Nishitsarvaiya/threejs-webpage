@@ -109,13 +109,13 @@ export default class App {
 
 			if (i === 0) {
 				const ambientLight = new AmbientLight(0xffffff, 10);
-				const light = new DirectionalLight(0xffffff, 1.5);
+				const light = new DirectionalLight(0xffffff, 5);
 				light.position.set(0, 1, 1);
 				scene.add(ambientLight);
 				scene.add(light);
 			} else {
 				const ambientLight = new AmbientLight(0xffffff, 3);
-				const light = new DirectionalLight(0xffffff, 1.5);
+				const light = new DirectionalLight(0xffffff, 5);
 				light.position.set(1, 1, 1);
 				scene.add(ambientLight);
 				scene.add(light);
